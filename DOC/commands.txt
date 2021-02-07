@@ -1,0 +1,29 @@
+ssh cambridgegenomicsaws
+/mnt/efs/fs1
+
+ssh -i ~/.ssh/cambridgegenomicsaws.pem ec2-user@54.205.69.11
+
+http://www.openbioinformatics.org/annovar/download/0wgxR2rIVP/annovar.latest.tar.gz
+
+scp -r .screenrc ec2-user@ec2-54-210-214-135.compute-1.amazonaws.com:~
+
+convert2annovar.pl -format vcf4 VCF/exome-test.vcf > AVINPUT/exome-test.avinput
+
+cd /home/ec2-user/efs/CoV-MadrID
+
+annotate_variation.pl -out OUT/AVOUT/ -build hg19 INPUT/AVINPUT/exome-test.avinput ../SOFTWARE/annovar/humandb/
+
+unset PROMPT_COMMAND in ~/.bashrc
+
+annotate_variation.pl -buildver hg19 -downdb -webfrom annovar gnomad211_exome humandb/
+
+table_annovar.pl INPUT/VCF/ex1.vcf ../SOFTWARE/annovar/humandb/ -buildver hg19 -out OUT/AVOUT/ex1.myanno -remove -protocol refGeneWithVer,cytoBand,gnomad211_exome -operation g,r,f -nastring . -vcfinput -polish
+
+The genetic variants that are most associated with severe COVID-19 on chromosome 3 (45,859,651–45,909,024 (hg19)) .
+https://www.nature.com/articles/s41586-020-2818-3
+
+./configure --without-curses --disable-bz2 --disable-lzma
+bgzip -c ex1.vcf > ex1.vcf.gz
+tabix -p vcf ex1.vcf.gz
+
+table_annovar.pl INPUT/VCF/ex1.DPP9.vcf ../SOFTWARE/annovar/humandb/ -buildver hg19 -out OUT/AVOUT/ex1.DPP9 -remove -protocol refGeneWithVer,cytoBand,gnomad211_exome -operation g,r,f -nastring . -vcfinput -polish
