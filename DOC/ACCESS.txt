@@ -1,0 +1,37 @@
+   Hello,
+
+   The raw data for EASI_62 is available on the CNAG's ftp server, and can
+   be downloaded using ftp clients such as lftp, WinSCP and Filezilla. If
+   you have trouble ith disconnections, we recommend FileZilla, as you can
+   set it to retry up to 99 times in the options.
+
+   Connection info:
+
+   host:ftp.cnag.cat
+   port: 22
+   protocol: SFTP
+   username: EASI
+   password: iQiWdtdwBqmKBlWiJTC23X5
+
+   The excel file EASI_62/EASI_62.xls indicates in which
+   flowcell-lane-index combination(s) each sample was sequenced. This
+   folder also contains the file EASI_62_Smple_Stats.xls, with various
+   statistics describing the results obtained from your samples. Some
+   columns may have values of NA (not applicable) as the analysis rquired
+   for such values was either not able to be performed or not requested.
+
+   Inside the FASTQ folder, files are named
+   <flowcell>_<lane>_<index>_<read>.fastq.gz. FASTQs are in standard format
+   with Sanger qualities (Phred+33).
+
+   The md5 checksums in .md5 can be used to check if there were any errors
+   during the transfer.
+
+   Data will be available for two weeks; please let us know if you have not
+   been able to download it within that period. Please keep a copy of these
+   files, as we epect that you will need them in the future and the CNAG
+   cannot guarantee to store them indefinitely. Don't hesitate to contact
+   us if you need any help or have ay problem with the files.
+
+   The CNAG's Data Analysis Team will contact you regarding the requested
+   analysis.
