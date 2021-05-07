@@ -1,6 +1,6 @@
-<<<<<<< HEAD
 # CoV-MadrID
 Study of severe COVID-19 patients from first wave of COVID infections in Madrid (April 2020)
-=======
-# 11-Cov-MadrID
->>>>>>> 55f6dde23f324f78dee461f370842970fb5a5d1d
+
+### How to run this
+1. perl PERL/01-FASTQ-2-SAM.pl
+2. sh BASH/00-sam-2-bam.sh

@@ -37,7 +37,7 @@ foreach my $flowcell (sort keys %$FASTQs) {
             my $R1  = $flowcell.'_'.$lane.'_'.$index."_1.fastq.gz";
             my $R2  = $flowcell.'_'.$lane.'_'.$index."_2.fastq.gz";
             my $Sam = $flowcell.'_'.$lane.'_'.$index.'.sam';
-            `bwa mem $idx $fastqpath/$R1 $fastqpath/$R2 > $samdir/$Sam`;
+            `bwa mem -t 32 $idx $fastqpath/$R1 $fastqpath/$R2 > $samdir/$Sam`;
             #}
         }
     }
