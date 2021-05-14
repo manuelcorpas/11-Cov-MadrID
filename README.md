@@ -3,6 +3,7 @@ Study of severe COVID-19 patients from first wave of COVID infections in Madrid 
 
 ### How to run this
 ```
+cd /home/ec2-user/fs1/CoV-MadrID/
 perl PERL/01-FASTQ-2-SAM.pl
 sh BASH/00-sam-2-bam.sh
 sh BASH/01-sort-bam.sh
