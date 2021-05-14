@@ -1,9 +1,3 @@
 .DS_Store
-<<<<<<< HEAD
-~*
+samtools.*
 *.vcf
-*.gz
-*.tbi
-.log
-=======
->>>>>>> 55f6dde23f324f78dee461f370842970fb5a5d1d
