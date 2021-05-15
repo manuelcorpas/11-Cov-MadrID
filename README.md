@@ -11,3 +11,7 @@ This one run it on t3a.2xlarge. You can then run in parallel in 8 screen windows
 ```
 sh BASH/01-sort-bam.sh
 ```
+Test Picard
+```
+java -jar /mnt/efs/fs1/SOFTWARE/picard.jar -h
+```
