@@ -42,3 +42,24 @@ Base Calibrator
 ```
 /home/ec2-user/fs1/SOFTWARE/gatk-4.2.0.0/gatk BaseRecalibrator -I *.marked_duplicates.bam -R /home/ec2-user/fs1/DATA/FASTA/hg19/hg19.fa --known-sites /home/ec2-user/fs1/DATA/GATK/1000G_phase1.indels.b37.vcf.gz --known-sites /home/ec2-user/fs1/DATA/GATK/1000G_phase3_v4_20130502.sites.vcf.gz --known-sites /  Mills_and_1000G_gold_standard.indels.b37.vcf.gz -O /home/ec2-user/fs1/DATA/GATK/*.recal_data.table
 ```
+Haplotype caller
+```
+gatk HaplotypeCaller \
+        -R ref.fa \
+        -I recal_reads.bam \
+        -O raw_variants_recal.vcf
+```
+Extract SNPs and Indels
+```
+gatk SelectVariants \
+        -R ref.fa \ 
+        -V raw_variants_recal.vcf \
+        -select-type SNP \
+        -O raw_snps_recal.vcf
+
+gatk SelectVariants \
+        -R ref.fa \ 
+        -V raw_variants.vcf \
+        -select-type INDEL \
+        -O raw_indels_recal.vcf
+```
