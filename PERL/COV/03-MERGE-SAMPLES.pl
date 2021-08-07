@@ -4,11 +4,12 @@ use Cwd qw(abs_path);
 use Data::Dumper;
 use Spreadsheet::XLSX;
 use Parallel::ForkManager;
-use File::Basename;
 
 my $abs_path  = abs_path;
 my $indirname = "$abs_path/INPUT/XLS";
-my $infile    = 'IBS.exomesForParsing.xlsx';
+my $infile    = 'EASI_62forParsing.xlsx';
+my $out_dir   = '/home/ec2-user/fs1/DATA/BAM.smpl';
+my $in_bams   = '/home/ec2-user/fs1/DATA/BAM';
 
 open my $fh, '<', "$indirname/$infile" or die "can't read open '$infile': $!";
 
@@ -45,37 +46,27 @@ foreach my $row ($worksheet->{MinRow} .. $worksheet->{MaxRow}) {
 my $sample;
 foreach my $row (@$data) {
   next if !$row;
-  my $sample_name = $row->{'Sample'};
-  my $fastq       = $row->{'url'};
-  #ERR047817_1.filt.fastq.gz
-  my $library;
-  if ($fastq =~ /(\w+)_\d\.filt\.fastq\.gz$/) {
-      $library=$1;
-      $sample->{$sample_name}{$library}++;
-
-    }
+  my $sample_name = $row->{'SAMPLE BARCODE'};
+  my $fastq       = $row->{'NAME'};
+  push @{$sample->{$sample_name}},$fastq;
 }
 
 my $j;
 my $forks =8;
 my $pm    = Parallel::ForkManager->new($forks);
 
-my @files = glob("/home/ec2-user/fs1/DATA/1000G/BAM/*.sorted.bam");
-print Dumper \@files;
-
 foreach my $sample_name (sort keys %$sample) {
 
   $j++;
-
   my $pid = $pm->start and next;
     print $j."\t";
-    my @bams  = (keys %{$sample->{$sample_name}});
+    my @bams  = @{$sample->{$sample_name}};
     my $input;
-    map { $input .= "INPUT=/home/ec2-user/fs1/DATA/1000G/BAM/$_.sorted.bam\t" } @bams;
-
-    print "$input\n";
+    map { $input .= "INPUT=$in_bams/$_.sorted.bam\t" } @bams;
+   
+    #print "$input\n";
     my $cmmd = qq(
-      java -jar /mnt/efs/fs1/SOFTWARE/picard.jar MergeSamFiles ASSUME_SORTED=false CREATE_INDEX=true  $input MERGE_SEQUENCE_DICTIONARIES=false OUTPUT=/home/ec2-user/fs1/DATA/1000G/BAM.smpl/$sample_name.merged.bam SORT_ORDER=coordinate USE_THREADING=true VALIDATION_STRINGENCY=STRICT
+      java -jar /mnt/efs/fs1/SOFTWARE/picard.jar MergeSamFiles ASSUME_SORTED=false CREATE_INDEX=true  $input MERGE_SEQUENCE_DICTIONARIES=false OUTPUT=$out_dir/$sample_name.merged.bam SORT_ORDER=coordinate USE_THREADING=true VALIDATION_STRINGENCY=STRICT
     );
     `$cmmd`;
     print $cmmd;

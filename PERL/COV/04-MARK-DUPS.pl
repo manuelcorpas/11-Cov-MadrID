@@ -7,7 +7,7 @@ use Parallel::ForkManager;
 use File::Basename;
 
 my $abs_path  = abs_path;
-my $in_bams   = '/home/ec2-user/fs1/DATA/1000G/BAM.smpl';
+my $in_bams   = '/home/ec2-user/fs1/DATA/BAM.smpl';
 my $tmp_dir   = '/home/ec2-user/fs1/DATA/tmp';
 
 opendir my $dir,$in_bams or die "Cannot open directory: $!";
@@ -26,7 +26,7 @@ foreach my $bam_file (@files) {
     print $j."\t";
     my $input  = "$in_bams/$bam_file";
     my ($filename,$dir,$ext) = fileparse($input,'\..*'); 
-    print "$input\n";
+    #print "$input\n";
     my $cmmd = qq(
       java -jar /mnt/efs/fs1/SOFTWARE/picard.jar MarkDuplicates CREATE_INDEX=true INPUT=$input VALIDATION_STRINGENCY=STRICT O=$in_bams/$filename.marked_duplicates.bam M=$in_bams/$filename.marked_dup_metrics.txt TMP_DIR=$tmp_dir
      );

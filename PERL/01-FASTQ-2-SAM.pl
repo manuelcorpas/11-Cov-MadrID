@@ -2,11 +2,11 @@ use strict;
 use v5.10; # for say() function
 use Cwd qw(abs_path);
 use Data::Dumper;
-
+use Parallel::ForkManager;
 my $abs_path  = abs_path;
-my $fastqpath = "$abs_path/../DATA/FASTQ";
+my $fastqpath = "$abs_path/../DATA/1000G/FASTQ";
 my $idx       = "$abs_path/../DATA/FASTA/hg19/hg19.fa";
-my $samdir    = "$abs_path/../DATA/SAM";
+my $samdir    = "$abs_path/../DATA/1000G/SAM";
 
 # rsync -avzP rsync://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/ .
 # cat chr1.fa chr2.fa ... chrX.fa chrY.fa > hg19.fa
@@ -21,25 +21,27 @@ my $FASTQs;
 
 map {
     my $filename = $_;
-    my ($flowcell,$lane,$index,$read); 
-    if ($filename =~ /(\S+)_(\S+)_(\S+)_(\S+)\.fastq.gz$/) {
-        ($flowcell,$lane,$index,$read) = ($1,$2,$3,$4);
+    my ($sample,$read); 
+    if ($filename =~ /(\S+)_[12]\.filt\.fastq\.gz$/) {
+        ($sample) = ($1);
+        $FASTQs->{$sample}++;
+        warn $sample;
     }
-    $FASTQs->{$flowcell}{$lane}{$index}{$read}++;
+    
 
 } @files;
 
 my $i;
-foreach my $flowcell (sort keys %$FASTQs) {
-    foreach my $lane (sort keys %{$FASTQs->{$flowcell}}) {
-        foreach my $index (sort keys %{$FASTQs->{$flowcell}{$lane}}){
-            #foreach my $read (sort keys %{$FASTQs->{$flowcell}{$lane}{$index}}) {
-            my $R1  = $flowcell.'_'.$lane.'_'.$index."_1.fastq.gz";
-            my $R2  = $flowcell.'_'.$lane.'_'.$index."_2.fastq.gz";
-            my $Sam = $flowcell.'_'.$lane.'_'.$index.'.sam';
-            `bwa mem -t 32 $idx $fastqpath/$R1 $fastqpath/$R2 > $samdir/$Sam`;
-            #}
-        }
-    }
+#SRR360346_2.filt.fastq.gz
+my $forks =4;
+my $pm = Parallel::ForkManager->new($forks);
+foreach my $sample (sort keys %$FASTQs) {
+	my $pid = $pm->start and next;
+     my $R1  = $sample."_1.filt.fastq.gz";
+     my $R2  = $sample."_2.filt.fastq.gz";
+     my $Sam = $sample.'.sam';
+    `bwa mem -t 32 $idx $fastqpath/$R1 $fastqpath/$R2 > $samdir/$Sam`;
+	$pm->finish;
 }
+$pm->wait_all_children; 
 say scalar @files . "\tfastq files";

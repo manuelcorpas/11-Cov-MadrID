@@ -15,3 +15,6 @@ Test Picard
 ```
 java -jar /mnt/efs/fs1/SOFTWARE/picard.jar -h
 ```
+
+######
+ANGSD is the directory for running ANGSD stuff. It is an $INDIR
