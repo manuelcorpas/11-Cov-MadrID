@@ -14,7 +14,7 @@ sql1 = "INSERT INTO 01_001_HIGH_IMPACT(ID_Sample,Patient,Uploaded_variation,Loca
 sql2 = "INSERT INTO 01_001_UPLOAD_ERR(ID_Sample,Patient,String) VALUES('{0}','{1}','{2}')"
 
 
-os.chdir("/Users/superintelligent2/CoV-MadrID.icloud/ANALYSIS/VEP")
+os.chdir("/Users/superintelligent2/CoV-MadrID.icloud/ANALYSIS/VEP/SNPs/001-EUR-1-CONSEQ-GENE")
 
 for file in glob.glob("*.txt"):
     print (Path(file).stem)

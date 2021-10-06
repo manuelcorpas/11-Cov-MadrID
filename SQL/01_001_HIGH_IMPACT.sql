@@ -77,11 +77,11 @@ ENGINE = MyISAM;
 DROP TABLE IF EXISTS `cov`.`01_001_PATIENTS_PER_GENE`;
 
 CREATE TABLE IF NOT EXISTS `cov`.`01_001_PATIENTS_PER_GENE` (
-    `ID_02_001_PATIENTS_PER_GENE` INT(11) NOT NULL AUTO_INCREMENT,
+    `ID_01_001_PATIENTS_PER_GENE` INT(11) NOT NULL AUTO_INCREMENT,
     `gene_name` VARCHAR(255) NOT NULL,
     `patient_count` INT(11) NOT NULL,
     `control_count` INT(11) NOT NULL,
-    PRIMARY KEY (`ID_02_001_PATIENTS_PER_GENE`)
+    PRIMARY KEY (`ID_01_001_PATIENTS_PER_GENE`)
 )                                                                                                                                                           
  ENGINE = MyISAM;
 
