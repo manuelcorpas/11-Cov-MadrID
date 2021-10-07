@@ -10,7 +10,7 @@ db = MySQLdb.connect(host='localhost',
 cursor = db.cursor()
 
 
-#sql2 = "INSERT INTO 02_UPLOAD_ERR(ID_Sample,String) VALUES('{0}','{1}')"
+sql1 = "INSERT INTO 02_PATIENT_VARIANT(Chromosome,Chr_Position,ID_Sample,REF,ALT,ZYG,GT_Bases) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
 
 os.chdir("/Users/superintelligent2/CoV-MadrID.icloud/DATA/MERGED/VCF/ALL/ISEC-DB-INPUT-CHR/")
 
@@ -20,5 +20,6 @@ for file in glob.glob("*.vcf"):
     for record in vcf_reader:
         for sample in record.samples:
             if sample['GT'] != './.':
-                print("{}\t{}\t{}\t{}".format(record.CHROM,record.POS,sample.sample,sample['GT']))
+                #print (record.CHROM[3:],record.POS,sample.sample,sample.gt_bases)
+                cursor.execute(sql1.format(record.CHROM[3:],record.POS,sample.sample,record.REF,record.ALT,sample['GT'],sample.gt_bases))
 

@@ -1,5 +1,4 @@
 
-CREATE SCHEMA IF NOT EXISTS `cov` DEFAULT CHARACTER SET utf8 ;
 USE `cov`;
 
 DROP TABLE IF EXISTS `cov`.`02_ISEC_ALL_VAR_CONSEQ` ;
@@ -7,10 +6,12 @@ DROP TABLE IF EXISTS `cov`.`02_ISEC_ALL_VAR_CONSEQ` ;
 CREATE TABLE IF NOT EXISTS `cov`.`02_ISEC_ALL_VAR_CONSEQ` (
     `ID_02_ISEC_ALL_VAR_CONSEQ` INT(11) NOT NULL AUTO_INCREMENT,
     `Uploaded_variation` TEXT,
-    `Location`        TEXT,   
+    `Chromosome` VARCHAR(5) NOT NULL,
+    `Chr_Start`  INT(25) NOT NULL,
+    `Chr_End`    INT(25) NOT NULL,
     `Allele`          TEXT,
     `Consequence`     TEXT,
-    `IMPACT`          TEXT,
+    `IMPACT`          VARCHAR(25) NOT NULL,
     `SYMBOL`          TEXT,
     `Gene`            TEXT,
     `Feature_type`    TEXT,   
@@ -56,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `cov`.`02_ISEC_ALL_VAR_CONSEQ` (
     `CADD_PHRED`      TEXT,
     `CADD_RAW`        TEXT,
     `LoFtool`         TEXT,
-    PRIMARY KEY (`ID_02_ISEC_ALL_VAR_CONSEQ`)
+    PRIMARY KEY (`ID_02_ISEC_ALL_VAR_CONSEQ`),
+    INDEX (`Chromosome`,`Chr_Start`,`Chr_End`,`IMPACT`)
 )
 ENGINE = MyISAM;
 
@@ -69,22 +71,55 @@ CREATE TABLE IF NOT EXISTS `cov`.`02_UPLOAD_ERR` (
 )
 ENGINE = MyISAM;
 
-DROP TABLE IF EXISTS `cov`.`02_PATIENTS_PER_VARIANT`;
-
-CREATE TABLE IF NOT EXISTS `cov`.`02_PATIENTS_PER_VARIANT` (
-    `ID_02_PATIENTS_PER_VARIANT` INT(11) NOT NULL AUTO_INCREMENT,
-    `gene_name` VARCHAR(255) NOT NULL,
-    `patient_count` INT(11) NOT NULL,
-    `control_count` INT(11) NOT NULL,
-    PRIMARY KEY (`ID_02_PATIENTS_PER_VARIANT`)
-)                                                                                                                                                           
- ENGINE = MyISAM;
-
-DROP TABLE IF EXISTS `cov`.`02_PATIENT_VARIANTS`;
+DROP TABLE IF EXISTS `cov`.`02_PATIENT_VARIANT`;
 
 CREATE TABLE IF NOT EXISTS `cov`.`02_PATIENT_VARIANT` (
     `ID_02_PATIENT_VARIANT` INT(11) NOT NULL AUTO_INCREMENT,
-    `Chromosome` VARCHAR(255) NOT NULL,
-    `Chr_position` INT(25) NOT NULL,
+    `Chromosome` VARCHAR(5) NOT NULL,
+    `Chr_Position` INT(25) NOT NULL,
+    `ID_Sample` VARCHAR(255) NOT NULL,
+    `REF` TEXT,
+    `ALT` TEXT,
+    `ZYG` TEXT,
+    `GT_Bases` TEXT NOT NULL,
+    PRIMARY KEY (`ID_02_PATIENT_VARIANT`),
+    INDEX(Chromosome,Chr_Position)
+)
+ENGINE = MyISAM;
+
+DROP TABLE IF EXISTS `cov`.`02_HIGH_IMPACT_VARIANT`;
+CREATE TABLE IF NOT EXISTS `cov`.`02_HIGH_IMPACT_VARIANT` (
+    `ID_02_HIGH_IMPACT_VARIANT` INT(11) NOT NULL AUTO_INCREMENT,
+    `ID_Sample` VARCHAR(255) NOT NULL,
+    `Chromosome` VARCHAR(5) NOT NULL,
+    `Chr_Start`    INT(25) NOT NULL,
+    `Chr_End`      INT(25) NOT NULL,
+    `REF` TEXT, 
+    `ALT` TEXT,
+    `ZYG` TEXT,
+    `GT_Bases` TEXT NOT NULL,
+    `Allele`          TEXT,
+    `Consequence`     TEXT,
+    `IMPACT`          VARCHAR(25) NOT NULL,
+    `SYMBOL`          TEXT,
+    PRIMARY KEY (`ID_02_HIGH_IMPACT_VARIANT`),
+    INDEX(Chromosome,Chr_Start,IMPACT)
+)
+ENGINE = MyISAM;
+
+
+
 
 -- chrY    3720516 HG01612 1/1
+
+DROP TABLE IF EXISTS `cov`.`02_PATIENTS_PER_GENE`;
+
+CREATE TABLE IF NOT EXISTS `cov`.`02_PATIENTS_PER_GENE` (  
+    `ID_02_PATIENTS_PER_GENE` INT(11) NOT NULL AUTO_INCREMENT,
+    `gene_name` VARCHAR(255) NOT NULL,
+    `patient_count` INT(11) NOT NULL,
+    `control_count` INT(11) NOT NULL,
+    PRIMARY KEY (`ID_02_PATIENTS_PER_GENE`) 
+)
+ENGINE = MyISAM;
+
