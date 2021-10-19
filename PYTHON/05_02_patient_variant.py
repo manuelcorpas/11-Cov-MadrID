@@ -10,7 +10,7 @@ db = MySQLdb.connect(host='localhost',
 cursor = db.cursor()
 
 
-sql1 = "INSERT INTO 02_PATIENT_VARIANT(Chromosome,Chr_Position,ID_Sample,REF,ALT,ZYG,GT_Bases) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
+sql1 = "INSERT INTO 05_02_PATIENT_VARIANT(Chromosome,Chr_Position,ID_Sample,REF,ALT,ZYG,GT_Bases) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
 
 os.chdir("/Users/superintelligent2/CoV-MadrID.icloud/DATA/MERGED/VCF/ALL/ISEC-DB-INPUT-CHR/")
 
