@@ -134,3 +134,27 @@ CREATE TABLE IF NOT EXISTS `cov`.`20_05_PATIENTS_PER_GENE_AF_FILTER` (
 )
 ENGINE = MyISAM;
 
+
+DROP TABLE IF EXISTS `cov`.`25_05_TCR_HIGH_IMPACT_VARIANT`;
+ CREATE TABLE IF NOT EXISTS `cov`.`25_05_TCR_HIGH_IMPACT_VARIANT` (
+    `ID_25_05_TCR_HIGH_IMPACT_VARIANT` INT NOT NULL AUTO_INCREMENT, 
+    `ID_Sample` VARCHAR(25) NOT NULL, 
+    `Patient`    INT NOT NULL, 
+    `Code`       VARCHAR(5) NOT NULL,
+    `Chromosome` VARCHAR(5) NOT NULL,
+    `Chr_Start`    INT NOT NULL, 
+    `Chr_End`      INT NOT NULL, 
+    `REF` TEXT, 
+    `ALT` TEXT,
+    `ZYG` TEXT, 
+    `Consequence`     TEXT,      
+    `IMPACT`          VARCHAR(25) NOT NULL,    
+    `SYMBOL`          TEXT,  
+    `AF`              TEXT,          
+    `gnomAD_AF`       TEXT,  
+    PRIMARY KEY (`ID_25_05_TCR_HIGH_IMPACT_VARIANT`),    
+    INDEX(Chromosome,Chr_Start,IMPACT)   
+)
+ ENGINE = MyISAM; 
+
+

@@ -9,7 +9,7 @@ db = MySQLdb.connect(host='localhost',
     db='cov')
 cursor = db.cursor()
 
-sql1 = "INSERT INTO 21_06_LEAD_VARS(Chromosome,Position,RSID,RiskAllele,RAF,OddsR) VALUES('{0}','{1}','{2}','{3}','{4}','{5}')"
+sql1 = "INSERT INTO 21_06_LEAD_VARS(Chromosome,Chr_start,Chr_end,RSID,RiskAllele,REF,ALT,RAF,OddsR) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')"
 
 
 os.chdir("/Users/superintelligent2/CoV-MadrID.icloud/ANALYSIS/MARKERS")
@@ -20,11 +20,11 @@ for file in glob.glob("*.txt"):
         reader = csv.reader(f,delimiter="\t")
         next(reader, None)
         for row in reader:
-            if len(row) == 6:
+            if len(row) == 9:
                 print(row)
                 if row[0] != '':
                     cursor.execute(sql1.format(*row))
             else:
-                print("error: "+row)
+                print("error: "+str(row))
 
 

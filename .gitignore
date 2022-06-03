@@ -3,3 +3,4 @@ samtools.*
 *.vcf
 tmp/*
 *.log
+*.icloud
