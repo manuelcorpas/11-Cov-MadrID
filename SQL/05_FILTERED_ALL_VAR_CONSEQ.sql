@@ -53,9 +53,9 @@ CREATE TABLE IF NOT EXISTS `cov`.`16_05_FILTERED_ALL_VAR_CONSEQ` (
     `MOTIF_SCORE_CHANGE`  TEXT,
     `TRANSCRIPTION_FACTORS`   TEXT,
     `Condel`          TEXT,
-    `MPC`             TEXT,
     `CADD_PHRED`      TEXT,
     `CADD_RAW`        TEXT,
+    `MPC`             TEXT, 
     `LoFtool`         TEXT,
     PRIMARY KEY (`ID_16_05_FILTERED_ALL_VAR_CONSEQ`),
     INDEX (`Chromosome`,`Chr_Start`,`Chr_End`,`IMPACT`)
@@ -139,7 +139,8 @@ CREATE TABLE IF NOT EXISTS `cov`.`25_05_TCR_HIGH_IMPACT_VARIANT` (
   `ID_25_05_TCR_HIGH_IMPACT_VARIANT` INT NOT NULL AUTO_INCREMENT, 
   `ID_Sample` VARCHAR(25) NOT NULL, 
   `Patient`    INT NOT NULL,   
-  `Code`       VARCHAR(5) NOT NULL,  
+  `Code`       VARCHAR(5) NOT NULL,
+  `Existing_variation` TEXT,
   `Chromosome` VARCHAR(5) NOT NULL,   
   `Chr_Start`    INT NOT NULL, 
   `Chr_End`      INT NOT NULL,  
@@ -149,12 +150,38 @@ CREATE TABLE IF NOT EXISTS `cov`.`25_05_TCR_HIGH_IMPACT_VARIANT` (
   `Consequence`     TEXT,   
   `IMPACT`          VARCHAR(25) NOT NULL,   
   `SYMBOL`          TEXT,
-  `AF`              TEXT, 
+  `CADD_RAW`      TEXT,
+  `AF`              TEXT,
+  `gnomAD_NFE_AF`   TEXT,
   `gnomAD_AF`       TEXT, 
   PRIMARY KEY (`ID_25_05_TCR_HIGH_IMPACT_VARIANT`),   
   INDEX(Chromosome,Chr_Start,IMPACT)   
 )
 ENGINE = MyISAM;
 
+
+DROP TABLE IF EXISTS `cov`.`26_05_TCR_CASE_CONTROL_MAF`;  
+ CREATE TABLE IF NOT EXISTS `cov`.`26_05_TCR_CASE_CONTROL_MAF` ( 
+  `ID_26_05_TCR_CASE_CONTROL_MAF` INT NOT NULL AUTO_INCREMENT,
+  `GENE`            TEXT,
+  `RSID`            VARCHAR(100),
+  `Chromosome`      VARCHAR(5) NOT NULL,  
+  `Chr_Start`       INT NOT NULL, 
+  `Chr_End`         INT NOT NULL,  
+  `REF`             TEXT,  
+  `ALT`             TEXT, 
+  `Consequence`     TEXT,
+  `CADD_RAW`      TEXT,
+  `Total alleles`   INT,
+  `Minor_allele_count` INT,
+  `AF`              TEXT,  
+  `gnomAD_AF`       TEXT,
+  `gnomAD_NFE_AF`   TEXT,
+  `MAF_ES_74`       TEXT,
+  `MAF_IBS_93`      TEXT, 
+  PRIMARY KEY (`ID_26_05_TCR_CASE_CONTROL_MAF`),    
+  INDEX(RSID,Chromosome,Chr_Start)   
+)
+ENGINE = MyISAM;
 
 

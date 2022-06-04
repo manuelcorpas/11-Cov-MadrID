@@ -16,10 +16,11 @@ ES_74     = ['AR5440','AR5443','AR5444','AR5445','AR5446','AR5447','AR5448','AR5
              'AR5497','AR5499','AR5500','AR5501','AR5502','AR5503','AR5506','AR5507','AR5508','AR5510','AR5511','AR5512','AR5513','AR5514','AR5516',
              'AR5517','AR5518','AR5520','AR5521','AR5522','AR5524','AR5526','AR5527','AR5530','AR5533','AR5535','AR5536','AR5538','AR5539']
 
+# CADD_PHRED is incorrectly loaded as MPC - I have changed the SQL 16_05_FILTERED_ALL_VAR_CONSEQ table now to correct for this
+# I got the order of columns for uploading the text table into the db wrong
+sql1 = "SELECT p.ID_Sample,s.Patient,S.Code,i.Existing_variation,p.Chromosome,i.Chr_Start,i.Chr_End,p.REF,p.ALT,p.ZYG,p.GT_Bases,i.Allele,i.Consequence,i.IMPACT,i.SYMBOL,i.MPC as CADD_PHRED,i.AF,i.gnomAD_AF,i.gnomAD_NFE_AF FROM 17_05_PATIENT_VARIANT as p,16_05_FILTERED_ALL_VAR_CONSEQ as i,00_SAMPLE as s WHERE i.Chromosome = p.Chromosome AND i.Chr_Start = p.Chr_Position AND s.ID_Sample = p.ID_Sample AND i.IMPACT = 'HIGH' AND i.SYMBOL ='{0}';"
 
-sql1 = "SELECT p.ID_Sample,s.Patient,S.Code,p.Chromosome,i.Chr_Start,i.Chr_End,p.REF,p.ALT,p.ZYG,p.GT_Bases,i.Allele,i.Consequence,i.IMPACT,i.SYMBOL,i.AF,i.gnomAD_AF FROM 17_05_PATIENT_VARIANT as p,16_05_FILTERED_ALL_VAR_CONSEQ as i,00_SAMPLE as s WHERE i.Chromosome = p.Chromosome AND i.Chr_Start = p.Chr_Position AND s.ID_Sample = p.ID_Sample AND i.IMPACT = 'HIGH' AND i.SYMBOL ='{0}';"
-
-sql2 = "INSERT INTO 25_05_TCR_HIGH_IMPACT_VARIANT(ID_Sample,Patient,Code,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,AF,gnomAD_AF) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}')"
+sql2 = "INSERT INTO 25_05_TCR_HIGH_IMPACT_VARIANT(ID_Sample,Patient,Code,Existing_variation,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,CADD_PHRED,AF,gnomAD_NFE_AF,gnomAD_AF) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}')"
 
 for gene in TCR_genes:
     cursor.execute(sql1.format(gene))
@@ -29,6 +30,7 @@ for gene in TCR_genes:
         ID_Sample     = result['ID_Sample']
         Patient       = result['Patient']
         Code          = result['Code']
+        Existing_variation = result['Existing_variation']
         Chromosome    = result['Chromosome']
         Effect_Allele = result['Allele']
         GT_Bases      = result['GT_Bases']
@@ -42,16 +44,18 @@ for gene in TCR_genes:
         Consequence   = result['Consequence']
         IMPACT        = result['IMPACT']
         SYMBOL        = result['SYMBOL']
+        CADD_PHRED    = result['CADD_PHRED']
         AF            = result['AF']
+        gnomAD_NFE_AF = result['gnomAD_NFE_AF']
         gnomAD_AF     = result['gnomAD_AF']
 
         # Print only ES_74 Patients
         if Patient == 1 and ID_Sample in ES_74:
-            print(ID_Sample,Patient,Code,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,AF,gnomAD_AF)
-            cursor.execute(sql2.format(ID_Sample,Patient,Code,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,AF,gnomAD_AF))
+            print(ID_Sample,Patient,Code,Existing_variation,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,CADD_PHRED,AF,gnomAD_NFE_AF,gnomAD_AF)
+            cursor.execute(sql2.format(ID_Sample,Patient,Code,Existing_variation,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,CADD_PHRED,AF,gnomAD_NFE_AF,gnomAD_AF))
 
         # Print all 1000G
         if Patient == 0:
-            print(ID_Sample,Patient,Code,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,AF,gnomAD_AF)
-            cursor.execute(sql2.format(ID_Sample,Patient,Code,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,AF,gnomAD_AF))
+            print(ID_Sample,Patient,Code,Existing_variation,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,CADD_PHRED,AF,gnomAD_NFE_AF,gnomAD_AF)
+            cursor.execute(sql2.format(ID_Sample,Patient,Code,Existing_variation,Chromosome,Chr_Start,Chr_End,REF,ALT,ZYG,Consequence,IMPACT,SYMBOL,CADD_PHRED,AF,gnomAD_NFE_AF,gnomAD_AF))
 
