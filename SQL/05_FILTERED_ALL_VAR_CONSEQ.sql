@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `cov`.`25_05_TCR_HIGH_IMPACT_VARIANT` (
   `Consequence`     TEXT,   
   `IMPACT`          VARCHAR(25) NOT NULL,   
   `SYMBOL`          TEXT,
-  `CADD_RAW`      TEXT,
+  `CADD_PHRED`      TEXT,
   `AF`              TEXT,
   `gnomAD_NFE_AF`   TEXT,
   `gnomAD_AF`       TEXT, 
@@ -158,7 +158,6 @@ CREATE TABLE IF NOT EXISTS `cov`.`25_05_TCR_HIGH_IMPACT_VARIANT` (
   INDEX(Chromosome,Chr_Start,IMPACT)   
 )
 ENGINE = MyISAM;
-
 
 DROP TABLE IF EXISTS `cov`.`26_05_TCR_CASE_CONTROL_MAF`;  
  CREATE TABLE IF NOT EXISTS `cov`.`26_05_TCR_CASE_CONTROL_MAF` ( 
@@ -171,14 +170,14 @@ DROP TABLE IF EXISTS `cov`.`26_05_TCR_CASE_CONTROL_MAF`;
   `REF`             TEXT,  
   `ALT`             TEXT, 
   `Consequence`     TEXT,
-  `CADD_RAW`      TEXT,
-  `Total alleles`   INT,
-  `Minor_allele_count` INT,
+  `CADD_PHRED`      TEXT,
+  `Case_alleles`    TEXT,
+  `Control_alleles` TEXT,
+  `Case_MAF`        FLOAT,
+  `Control_MAF`     FLOAT,
   `AF`              TEXT,  
-  `gnomAD_AF`       TEXT,
   `gnomAD_NFE_AF`   TEXT,
-  `MAF_ES_74`       TEXT,
-  `MAF_IBS_93`      TEXT, 
+  `gnomAD_AF`      TEXT,
   PRIMARY KEY (`ID_26_05_TCR_CASE_CONTROL_MAF`),    
   INDEX(RSID,Chromosome,Chr_Start)   
 )
