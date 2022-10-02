@@ -9,27 +9,48 @@ db = MySQLdb.connect(host='localhost',
     db='cov')
 cursor = db.cursor()
 
-sql  = "SELECT * FROM 28_07_Phenotypes WHERE Sample_id = '{0}'"
-sql1 = "SELECT Existing_variation,ZYG,SYMBOL FROM 25_05_TCR_HIGH_IMPACT_VARIANT WHERE Patient =1 and ID_Sample = '{0}'"
+sql  = "SELECT Pneumonia,ARDS,ARDS_N_ICU,Skin_exanthema,Heart_myocarditis,Heart_arrhythmia,Liver_hepatitis,Kidney_glomerulonephritis,Kidney_tubulopathy,Neurological_encephalitis,Neurological_psychiatric,Neurological_polyneuropathy,Neurological_myelitis,Neurological_seizure,Gastrointestinal_diarrhea,Gastrointestinal_vomiting,Endocrine_dysfunction,Musculoskeletal_myopathy,Musculoskeletal_arthritis,Cytopenia,Pulmonary_embolism,Deep_thrombosis,Peripheral_thrombosis,Stroke,Ischemic_heart,Intravascular_coagulation,Persistent_fever,Fatigue_malaise FROM 28_07_Phenotypes WHERE Sample_id = '{0}'"
+
+sql1 = "SELECT SYMBOL FROM 25_05_TCR_HIGH_IMPACT_VARIANT WHERE Patient =1 AND ID_Sample = '{0}' GROUP BY SYMBOL"
+
+Phenotypes=['Pneumonia','ARDS','ARDS_N_ICU','Skin_exanthema','Heart_myocarditis','Heart_arrhythmia','Liver_hepatitis','Kidney_glomerulonephritis','Kidney_tubulopathy','Neurological_encephalitis','Neurological_psychiatric','Neurological_polyneuropathy','Neurological_myelitis','Neurological_seizure','Gastrointestinal_diarrhea','Gastrointestinal_vomiting','Endocrine_dysfunction','Musculoskeletal_myopathy','Musculoskeletal_arthritis','Cytopenia','Pulmonary_embolism','Deep_thrombosis','Peripheral_thrombosis','Stroke','Ischemic_heart','Intravascular_coagulation','Persistent_fever','Fatigue_malaise']
+Patient={}
 
 with open ('/Users/superintelligent2/CloudDocs/CoV-MadrID/DATA/SAMPLES/74_samples.txt') as f:
     n = 0
     while True:
         line = f.readline()
-        if not line or n ==3:
+        if not line: # or n ==3:
             break
         else:
             Patient_id = line.strip()
-            print(line.strip())
+            Patient[Patient_id] = {'phenos':[],'genes':[]}
             cursor.execute(sql.format(Patient_id))
             results = cursor.fetchall()
-            print(results)
+
+            for result in results:
+                i = 0
+                for pheno in result:
+
+                    if pheno == 'YES':
+                        Patient[Patient_id]['phenos'].append(Phenotypes[i])
+                    i = i + 1
+
             cursor.execute(sql1.format(Patient_id))
             results = cursor.fetchall()
-            print(results)
+
+            for result in results:
+                for gene in result:
+                    Patient[Patient_id]['genes'].append(gene)
         n = n +1
 
-
+for p in Patient:
+    print(p,end='\t')
+    #for pheno in Patient[p]['phenos']:
+    print (','.join(Patient[p]['phenos']))
+    print(p,end='\t')
+    print (','.join(Patient[p]['genes']))
+    print ('  ')
 
 
 '''
