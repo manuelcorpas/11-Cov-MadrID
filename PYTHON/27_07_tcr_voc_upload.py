@@ -18,7 +18,7 @@ for file in glob.glob("*.csv"):
     print (Path(file).stem)
     with open(file,encoding = "ISO-8859-1") as f:
         reader = csv.reader(f,delimiter=",")
-        next(reader, None)
+        #next(reader, None)
         for row in reader:
             if len(row) == 13:
                 print(row)
