@@ -3,10 +3,7 @@ import MySQLdb
 import glob, os
 from pathlib import Path
 
-db = MySQLdb.connect(host='localhost',
-    user='root',
-    passwd='',
-    db='cov')
+db = MySQLdb.connect(db='cov',read_default_file='~/.my.cnf')
 cursor = db.cursor(MySQLdb.cursors.DictCursor)
 
 TCR_genes = ['TRAV19','TRBV5-5','TRBV6-5','TRBV6-7','TRBV7-1','TRBV7-3','TRBV7-6','TRBV7-7','TRBV7-8','TRBV10-1','TRBV30']

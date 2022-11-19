@@ -3,10 +3,7 @@ import MySQLdb
 import glob, os
 from pathlib import Path
 
-db = MySQLdb.connect(host='localhost',
-    user='root',
-    passwd='',
-    db='cov')
+db = MySQLdb.connect(db='cov',read_default_file='~/.my.cnf')
 cursor = db.cursor(MySQLdb.cursors.DictCursor)
 
 sql1 = "SELECT p.ID_Sample,s.Patient,S.Code,p.Chromosome,i.Chr_Start,i.Chr_End,p.REF,p.ALT,p.ZYG,p.GT_Bases,i.Allele,i.Consequence,i.IMPACT,i.SYMBOL,i.AF,i.gnomAD_AF FROM 17_05_PATIENT_VARIANT as p,16_05_FILTERED_ALL_VAR_CONSEQ as i,00_SAMPLE as s WHERE i.Chromosome = p.Chromosome AND i.Chr_Start = p.Chr_Position AND s.ID_Sample = p.ID_Sample AND i.IMPACT = 'HIGH';"
