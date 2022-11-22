@@ -189,7 +189,7 @@ DROP TABLE IF EXISTS `cov`.`30_05_TCR_HIGH_IMPACT_COUNT`;
   `PATIENT`         VARCHAR(10) NOT NULL,
   `TRBV5_5`         INT NOT NULL,
   `TRBV6_5`         INT NOT NULL,
-  `TRBV6_7`         INT NOT NULL,
+  `TRBV7_3`         INT NOT NULL,
   `TRBV7_6`         INT NOT NULL,
   `TRBV7_7`         INT NOT NULL,
   `TRBV7_8`         INT NOT NULL,

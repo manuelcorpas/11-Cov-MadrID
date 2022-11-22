@@ -10,9 +10,9 @@ from sys import exit
 db = MySQLdb.connect(db='cov',read_default_file='~/.my.cnf')
 cursor = db.cursor(MySQLdb.cursors.DictCursor)
 
-SQL_TCR_genes = {'TRBV5-5':'TRBV5_5','TRBV6-5':'TRBV6_5','TRBV6-7':'TRBV6_7','TRBV7-6':'TRBV7_6','TRBV7-7':'TRBV7_7','TRBV7-8':'TRBV7_8','TRBV10-1':'TRBV10_1','TRBV30':'TRBV30'}
+SQL_TCR_genes = {'TRBV5-5':'TRBV5_5','TRBV6-5':'TRBV6_5','TRBV7-3':'TRBV7_3','TRBV7-6':'TRBV7_6','TRBV7-7':'TRBV7_7','TRBV7-8':'TRBV7_8','TRBV10-1':'TRBV10_1','TRBV30':'TRBV30'}
 SQL_TCR_RSIDs = []
-TCR_genes = ['TRBV5-5','TRBV6-5','TRBV6-7','TRBV7-6','TRBV7-7','TRBV7-8','TRBV10-1','TRBV30']
+TCR_genes = ['TRBV5-5','TRBV6-5','TRBV7-3','TRBV7-6','TRBV7-7','TRBV7-8','TRBV10-1','TRBV30']
 ES_74     = ['AR5440','AR5443','AR5444','AR5445','AR5446','AR5447','AR5448','AR5449','AR5450','AR5451','AR5452','AR5454','AR5455','AR5457','AR5458',
              'AR5459','AR5460','AR5461','AR5462','AR5463','AR5464','AR5465','AR5466','AR5467','AR5468','AR5469','AR5470','AR5472','AR5473','AR5474',
              'AR5475','AR5476','AR5477','AR5478','AR5481','AR5484','AR5485','AR5486','AR5487','AR5488','AR5490','AR5492','AR5493','AR5495','AR5496',
@@ -21,7 +21,7 @@ ES_74     = ['AR5440','AR5443','AR5444','AR5445','AR5446','AR5447','AR5448','AR5
 
 sql1 = "SELECT ID_Sample,Existing_variation,ZYG FROM 25_05_TCR_HIGH_IMPACT_VARIANT WHERE SYMBOL = '{0}' and Patient = 1;"
 
-sql2 = "INSERT INTO 30_05_TCR_HIGH_IMPACT_COUNT(PATIENT,TRBV5_5,TRBV6_5,TRBV6_7,TRBV7_6,TRBV7_7,TRBV7_8,TRBV10_1,TRBV30) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')"
+sql2 = "INSERT INTO 30_05_TCR_HIGH_IMPACT_COUNT(PATIENT,TRBV5_5,TRBV6_5,TRBV7_3,TRBV7_6,TRBV7_7,TRBV7_8,TRBV10_1,TRBV30) VALUES('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')"
 
 sql3 = "SELECT RSID FROM 27_07_TCR_VoC;"
 
@@ -69,4 +69,4 @@ for patient in ES_74:
         patient_row[SQL_TCR_gene]=g[gene][patient]
 
     print(patient,*patient_row.values())
-#    cursor.execute(sql2.format(patient,*patient_row.values()))
+    cursor.execute(sql2.format(patient,*patient_row.values()))
